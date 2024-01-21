@@ -17,7 +17,7 @@ val generativeModel = GenerativeModel(
 )
 
 val cookieImageData: ByteArray = // ...
-val inputContent = content() {
+val inputContent = content {
   image(PlatformImage(cookieImageData))
   text("Does this look store-bought or homemade?")
 }
