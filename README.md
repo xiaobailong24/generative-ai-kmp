@@ -54,10 +54,16 @@ This quickstart describes how to add your API key and the SDK's dependency to yo
 initialize the model, and then call the API to access the model. It also describes some additional 
 use cases and features, like streaming, counting tokens, and controlling responses.
 
+## Try sample app
+
+Try these apps built with this SDK by the community:
+
+- [joreilly/GeminiKMP](https://github.com/joreilly/GeminiKMP): Kotlin Multiplatform sample that uses Gemini Generative AI APIs. Runs on Android, iOS, Desktop, WearOS and Wasm-based Compose for Web. 
+
 ## Documentation
 
 You can use the APIs mentioned in the [API Reference](https://ai.google.dev/tutorials/android_quickstart)
-by official library.
+by the official library.
 
 From the official library, there are two major changes:
 - Package `com.google` is mapped to `dev.shreyaspatil`.
@@ -69,13 +75,13 @@ See [Contributing](https://github.com/patilshreyas/generative-ai-kmp/blob/main/C
 more information on contributing to the client SDK for multiplatform.
 
 ## Credits
-Big thanks to Google for project [google/generative-ai-android](https://github.com/google/generative-ai-android).
+Thanks to Google for the project: [google/generative-ai-android](https://github.com/google/generative-ai-android).
 
 ## Fork License
-Copyright for portions of the code are held by [Google] as part of project 
+Copyright for portions of the code is held by [Google, 2023] as part of the project 
 [google/generative-ai-android](https://github.com/google/generative-ai-android) under the 
 Apache License, version 2.0. 
-All other copyright for project generative-ai-multiplatform are held by [Google, 2023] under the 
+All other copyrights for project *generative-ai-kmp* are held by [Shreyas Patil, 2024] under the 
 Apache License, Version 2.0.
 
 ## License
