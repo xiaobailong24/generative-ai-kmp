@@ -7,17 +7,18 @@ This SDK supports use cases like:
 - Generate text from text-and-images input (multimodal)
 - Build multi-turn conversations (chat)
 
-For example, with just a few lines of code, you can access Gemini's multimodal capabilities to generate text from text-and-image input:
+For example, with just a few lines of code, you can access Gemini's multimodal capabilities to 
+generate text from text-and-image input:
 
 ```kotlin
 val generativeModel = GenerativeModel(
-    modelName = "gemini-pro-vision",
-    apiKey = BuildConfig.apiKey
+    modelName = "gemini-pro-vision", // or "gemini-pro" for text-only input
+    apiKey = "YOUR_API_KEY"
 )
 
-val cookieImage: Bitmap = // ...
+val cookieImageData: ByteArray = // ...
 val inputContent = content() {
-  image(cookieImage)
+  image(PlatformImage(cookieImageData))
   text("Does this look store-bought or homemade?")
 }
 
@@ -27,8 +28,16 @@ print(response.text)
 
 ## Installation and usage
 
-Add the dependency (`implementation("dev.shreyaspatil.generativeai:generativeai:<version>"`) to 
-your Kotlin Multiplatform project.
+Add the following dependency to your Kotlin Multiplatform project for `commonMain`:
+
+```kotlin
+commonMain.dependencies {
+    implementation("dev.shreyaspatil.generativeai:generativeai-google:<version>")
+}
+```
+
+Check for latest version in the [releases](https://github.com/PatilShreyas/generative-ai-kmp/releases) 
+<a href="https://search.maven.org/search?q=g:dev.shreyaspatil.generativeai"><img src="https://img.shields.io/maven-central/v/dev.shreyaspatil.generativeai/generativeai-google?label=Maven%20Central&logo=kotlin&style=flat-square"/></a>
 
 For detailed instructions, you can find a [quickstart](https://ai.google.dev/tutorials/android_quickstart) 
 for the Google AI client SDK for Android (_Since this is a Fork of the original project by Google_).
@@ -39,7 +48,12 @@ use cases and features, like streaming, counting tokens, and controlling respons
 
 ## Documentation
 
-To be updated...
+You can use the APIs mentioned in the [API Reference](https://ai.google.dev/tutorials/android_quickstart)
+by official library.
+
+From the official library, there are two major changes:
+- Package `com.google` is mapped to `dev.shreyaspatil`.
+- `Image(Bitmap)` was there for Android, instead `PlatformImage(ByteArray)` is used for KMP.
 
 ## Contributing
 
