@@ -26,6 +26,13 @@ val response = generativeModel.generateContent(inputContent)
 print(response.text)
 ```
 
+Support following Kotlin Multiplatform targets:
+- [x] Android
+- [x] iOS
+- [x] JVM
+- [x] JS
+- [x] Wasm (_Use this [version](https://github.com/PatilShreyas/generative-ai-kmp/releases/tag/v0.1.2-0.0.1-wasm)_)
+
 ## Installation and usage
 
 Add the following dependency to your Kotlin Multiplatform project for `commonMain`:
