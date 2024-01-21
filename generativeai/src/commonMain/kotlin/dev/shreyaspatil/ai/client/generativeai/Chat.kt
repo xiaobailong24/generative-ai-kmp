@@ -169,7 +169,7 @@ class Chat(private val model: GenerativeModel, val history: MutableList<Content>
         if (!lock.tryAcquire()) {
             throw InvalidStateException(
                 "This chat instance currently has an ongoing request, please wait for it to complete " +
-                        "before sending more messages"
+                    "before sending more messages",
             )
         }
     }
