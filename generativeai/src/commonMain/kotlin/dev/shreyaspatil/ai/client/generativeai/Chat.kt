@@ -26,6 +26,7 @@ import dev.shreyaspatil.ai.client.generativeai.type.content
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.sync.Semaphore
 
 /**
  * Representation of a back and forth interaction with a model.
@@ -33,10 +34,15 @@ import kotlinx.coroutines.flow.onEach
  * Handles the capturing and storage of the communication with the model, providing methods for
  * further interaction.
  *
+ * Note: This object is not thread-safe, and calling [sendMessage] multiple times without waiting
+ * for a response will throw an [InvalidStateException].
+ *
  * @param model the model to use for the interaction
  * @property history the previous interactions with the model
  */
 class Chat(private val model: GenerativeModel, val history: MutableList<Content> = ArrayList()) {
+
+    private var lock = Semaphore(1)
 
     /**
      * Generates a response from the backend with the provided [Content], and any previous ones
@@ -44,22 +50,26 @@ class Chat(private val model: GenerativeModel, val history: MutableList<Content>
      *
      * @param prompt A [Content] to send to the model.
      * @throws InvalidStateException if the prompt is not coming from the 'user' role
+     * @throws InvalidStateException if the [Chat] instance has an active request.
      */
     suspend fun sendMessage(prompt: Content): GenerateContentResponse {
         prompt.assertComesFromUser()
-
-        val response = model.generateContent(*history.toTypedArray(), prompt)
-
-        history.add(prompt)
-        history.add(response.candidates.first().content)
-
-        return response
+        attemptLock()
+        try {
+            val response = model.generateContent(*history.toTypedArray(), prompt)
+            history.add(prompt)
+            history.add(response.candidates.first().content)
+            return response
+        } finally {
+            lock.release()
+        }
     }
 
     /**
      * Generates a response from the backend with the provided text represented [Content].
      *
      * @param prompt The text to be converted into a single piece of [Content] to send to the model.
+     * @throws InvalidStateException if the [Chat] instance has an active request.
      */
     suspend fun sendMessage(prompt: String): GenerateContentResponse {
         val content = content("user") { text(prompt) }
@@ -70,6 +80,7 @@ class Chat(private val model: GenerativeModel, val history: MutableList<Content>
      * Generates a response from the backend with the provided image represented [Content].
      *
      * @param prompt The image to be converted into a single piece of [Content] to send to the model.
+     * @throws InvalidStateException if the [Chat] instance has an active request.
      */
     suspend fun sendMessage(prompt: PlatformImage): GenerateContentResponse {
         val content = content("user") { image(prompt) }
@@ -82,9 +93,11 @@ class Chat(private val model: GenerativeModel, val history: MutableList<Content>
      * @param prompt A [Content] to send to the model.
      * @return A [Flow] which will emit responses as they are returned from the model.
      * @throws InvalidStateException if the prompt is not coming from the 'user' role
+     * @throws InvalidStateException if the [Chat] instance has an active request.
      */
     fun sendMessageStream(prompt: Content): Flow<GenerateContentResponse> {
         prompt.assertComesFromUser()
+        attemptLock()
 
         val flow = model.generateContentStream(*history.toTypedArray(), prompt)
         val bitmaps = LinkedHashSet<PlatformImage>()
@@ -107,6 +120,7 @@ class Chat(private val model: GenerativeModel, val history: MutableList<Content>
                 }
             }
             .onCompletion {
+                lock.release()
                 if (it == null) {
                     val content =
                         content("model") {
@@ -132,6 +146,7 @@ class Chat(private val model: GenerativeModel, val history: MutableList<Content>
      *
      * @param prompt A [Content] to send to the model.
      * @return A [Flow] which will emit responses as they are returned from the model.
+     * @throws InvalidStateException if the [Chat] instance has an active request.
      */
     fun sendMessageStream(prompt: String): Flow<GenerateContentResponse> {
         val content = content("user") { text(prompt) }
@@ -143,10 +158,20 @@ class Chat(private val model: GenerativeModel, val history: MutableList<Content>
      *
      * @param prompt A [Content] to send to the model.
      * @return A [Flow] which will emit responses as they are returned from the model.
+     * @throws InvalidStateException if the [Chat] instance has an active request.
      */
     fun sendMessageStream(prompt: PlatformImage): Flow<GenerateContentResponse> {
         val content = content("user") { image(prompt) }
         return sendMessageStream(content)
+    }
+
+    private fun attemptLock() {
+        if (!lock.tryAcquire()) {
+            throw InvalidStateException(
+                "This chat instance currently has an ongoing request, please wait for it to complete " +
+                        "before sending more messages"
+            )
+        }
     }
 
     private fun Content.assertComesFromUser() {
