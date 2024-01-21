@@ -45,11 +45,6 @@ kotlin {
             isStatic = true
         }
     }
-    mingwX64().binaries {
-        executable {
-            baseName = "generativeai"
-        }
-    }
 
     sourceSets {
         commonMain.dependencies {
