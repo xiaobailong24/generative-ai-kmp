@@ -1,4 +1,6 @@
-# Google Generative AI SDK for Kotlin Multiplatform
+# Google Generative AI SDK for Kotlin Multiplatform ✨
+
+<a href="https://search.maven.org/search?q=g:dev.shreyaspatil.generativeai"><img src="https://img.shields.io/maven-central/v/dev.shreyaspatil.generativeai/generativeai-google?label=Maven%20Central&logo=kotlin&style=flat-square"/></a>
 
 The Google Generative AI client SDK for Kotlin Multiplatform enables developers to use Google's 
 state-of-the-art generative AI models (like Gemini) to build AI-powered features and applications. 
@@ -26,7 +28,7 @@ val response = generativeModel.generateContent(inputContent)
 print(response.text)
 ```
 
-Support following Kotlin Multiplatform targets:
+Supports the following Kotlin Multiplatform targets:
 - [x] Android
 - [x] iOS
 - [x] JVM
@@ -43,8 +45,7 @@ commonMain.dependencies {
 }
 ```
 
-Check for latest version in the [releases](https://github.com/PatilShreyas/generative-ai-kmp/releases) 
-<a href="https://search.maven.org/search?q=g:dev.shreyaspatil.generativeai"><img src="https://img.shields.io/maven-central/v/dev.shreyaspatil.generativeai/generativeai-google?label=Maven%20Central&logo=kotlin&style=flat-square"/></a>
+Check for latest version in the [releases](https://github.com/PatilShreyas/generative-ai-kmp/releases).
 
 For detailed instructions, you can find a [quickstart](https://ai.google.dev/tutorials/android_quickstart) 
 for the Google AI client SDK for Android (_Since this is a Fork of the original project by Google_).
