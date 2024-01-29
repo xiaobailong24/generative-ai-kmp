@@ -58,6 +58,7 @@ use cases and features, like streaming, counting tokens, and controlling respons
 
 Try these apps built with this SDK by the community:
 
+- [PatilShreyas/ChaKt](https://github.com/PatilShreyas/ChaKt-KMP): Chat-prompt based app for Android, iOS, Desktop, Web. Powered by this multiplatform SDK.
 - [joreilly/GeminiKMP](https://github.com/joreilly/GeminiKMP): Kotlin Multiplatform sample that uses Gemini Generative AI APIs. Runs on Android, iOS, Desktop, WearOS and Wasm-based Compose for Web.
 
 *(Have you built anything on top of this SDK? Let's add it here)*
