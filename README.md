@@ -54,6 +54,13 @@ This quickstart describes how to add your API key and the SDK's dependency to yo
 initialize the model, and then call the API to access the model. It also describes some additional 
 use cases and features, like streaming, counting tokens, and controlling responses.
 
+### Releases
+The versioning scheme is of the form `X-Y` where:
+
+X is the _Generative AI  Android SDK_ version that is being tracked.
+Y is the _Multiplatform SDK_ version.
+For example, if _Generative AI  Android SDK_ is on `0.1.2` and _Multiplatform SDK_ is on `0.0.1`, the artifact for a release will be `dev.shreyaspatil.generativeai:generativeai-google:0.1.2-0.0.1`.
+
 ## Try sample app
 
 Try these apps built with this SDK by the community:
