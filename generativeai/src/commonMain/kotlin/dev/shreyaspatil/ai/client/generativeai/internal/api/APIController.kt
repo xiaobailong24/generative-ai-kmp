@@ -16,6 +16,7 @@
 package dev.shreyaspatil.ai.client.generativeai.internal.api
 
 import dev.shreyaspatil.ai.client.generativeai.internal.util.decodeToFlow
+import dev.shreyaspatil.ai.client.generativeai.platform.Log
 import dev.shreyaspatil.ai.client.generativeai.type.ServerException
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
@@ -109,7 +110,7 @@ internal class APIController(
                 install(Logging) {
                     logger = object : io.ktor.client.plugins.logging.Logger {
                         override fun log(message: String) {
-                            println("Ktor Logging: $message")
+                            Log.d("Ktor Logging", message)
                         }
                     }
                     level = io.ktor.client.plugins.logging.LogLevel.BODY
