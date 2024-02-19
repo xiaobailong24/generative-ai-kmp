@@ -23,6 +23,7 @@ import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -105,6 +106,14 @@ internal class APIController(
                     socketTimeoutMillis = 80_000
                 }
                 install(ContentNegotiation) { json(JSON) }
+                install(Logging) {
+                    logger = object : io.ktor.client.plugins.logging.Logger {
+                        override fun log(message: String) {
+                            println("Ktor Logging: $message")
+                        }
+                    }
+                    level = io.ktor.client.plugins.logging.LogLevel.BODY
+                }
             }
             return if (engine == null) {
                 HttpClient(block = configuration)
